@@ -3,7 +3,6 @@ from dotenv import load_dotenv
 from os import getenv
 from authlib.integrations.flask_client import OAuth
 
-
 app = Flask(__name__)
 
 app.secret_key = "mysecretkey"
@@ -25,18 +24,16 @@ github = oauth.register(
 
 @app.route("/")
 def saludo():
-    return getenv("CLIENT_ID")
+    return "Hello"
 
 @app.route("/login")
 def login():
-    github = oauth.create_client("github")
     redirect_url = url_for("authorize", _external=True)
     return github.authorize_redirect(redirect_url)
 
 
 @app.route("/authorize")
 def authorize():
-    github = oauth.create_client('github')
     token = github.authorize_access_token()
     resp = github.get('user', token=token)
     profile = resp.json()
